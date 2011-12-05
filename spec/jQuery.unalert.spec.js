@@ -21,11 +21,14 @@ describe("jquery.unalert", function() {
   beforeEach(function() {
     createDomElement(null, 'Fake message'); // Create at least one!
     updateSelector();
+    
+    $selector.css('background', 'red')
   });
   
   afterEach(function() {
     updateSelector();
     $selector.remove();
+    // $('div.unalert').remove();
     for(var k in callbacks) {
       callbacks[k].reset();
     }
@@ -81,15 +84,32 @@ describe("jquery.unalert", function() {
     });
 
     describe('init', function() {
+      it('should wrap the selctor node on a unalert overlay div appended to body', function() {
+        $selector.unalert();
+        expect($selector.parent().attr('id')).toMatch(/^unalert_overlay_[0-9]+$/);
+        expect($selector.parent().parent().prop('tagName')).toBe('BODY');
+      });
       it('should create a reference to the unalert div created', function() {
         $selector.unalert();
         expect($selector.data('unalert')).toBeDefined();
         expect($selector.data('unalert')).not.toBeNull();
+        expect($selector.data('unalert').prop('tagName')).toBe('DIV');
       });
     });
 
     describe('show', function() {
-      
+      beforeEach(function() {
+        $selector.unalert({visible: false});
+      });
+      it('should make the unalert overlay visible', function() {
+        $selector.unalert('show');
+        expect($selector.is(':visible')).toBeTruthy();
+      });
+      it('should execute the callback method', function() {
+        $selector.unalert('show');
+        expect(callbacks.show).toHaveBeenCalled();
+        expect(callbacks.show.callCount).toBe(1);
+      });
     });
     describe('hide', function() {});
     describe('click', function() {});

@@ -26,77 +26,7 @@
 (function($) {
   var index = 0,
       unalerts = [];
-
-  function init(options) {
-    // Merge the options passed wih the plugin settings
-    options = $.extend({}, $.unalert.settings, options);
-    return this.each(function() {
-      var $this = $(this).detach(),
-          $unalert = $('<div />').addClass('unalert').attr('id', 'unalert_overlay_'+(++index));
-          $unalert.append($this).appendTo('body');
-      // Set the internal data
-      $unalert.data('count', index);
-      $unalert.data('element', this);
-      $unalert.data('visible', false);
-      $unalert.data('options', options);
-      // Style it
-      $alert.css('position', 'absolute');
-      // $alert.css('top', options.top);
-      // $alert.css('left', options.left);
-      // $alert.css('width', options.width);
-      // $alert.css('height', options.height);
-      $alert.css('z-index', 999999999999999);
-      // Bind it to align into the window
-      $(window).bind('resize.unalert', alignHandler).
-                bind('scroll.unalert', alignHandler);
-      $(window).resize();
-      // Add reference to the plugin
-      unalerts.push($unalert);
-    });
-  }
-
-  function alignHandler() {
-    var windowWidth     = $(window).width(),
-        windowHeight    = $(window).height()
-        windowScrollTop = $(window).scrollTop();
-    // Calculate the alignment
-    $.each(alerts, function(index, $alert) {
-      var options = $alert.data('options'),
-          element = $alert.data('element')
-          horizontalRatio, verticalRatio;
-      // Left margin
-      if(horizontalRatio = getRatio(options.left)) {
-        var leftMarginOffset = $alert.width() * horizontalRatio * -1;
-        $alert.css('margin-left', leftMarginOffset);
-      }
-      // Top margin
-      if(verticalRatio = getRatio(options.top)) {
-        var topOffset = windowScrollTop + windowHeight * verticalRatio,
-            topMarginOffset = $alert.height() * verticalRatio / -2;
-        $alert.css('margin-top', topMarginOffset);
-        $alert.css('top', topOffset);
-      }
-      // Execute the callback
-      options.align.call(element);
-    });
-  }
-
-  function showHandler() {
-  }
-
-  function hideHandler() {
-  }
-
-  function clickHandler() {
-  }
-
-  function timeoutHandler() {
-  }
-
-  var methods = {
-    init: init
-  }
-
+  
   $.unalert = {
     version: '1.0.0beta',
     settings: {
@@ -104,8 +34,8 @@
       left: '50%',
       right: null,
       bottom: null,
-      width: null,
-      height: null,
+      width: '450px',
+      height: '100px',
       show: showHandler,
       hide: hideHandler,
       click: clickHandler,
@@ -128,4 +58,162 @@
       $.error('Method %s does not exist on jQuery.tooltip'.replace(/\%s/gi, method));
     }
   };
+  
+  function showHandler() {
+  }
+
+  function hideHandler() {
+  }
+  
+  function alignHandler() {
+  }
+
+  function clickHandler() {
+  }
+
+  function timeoutHandler() {
+  }
+
+  function init(options) {
+    // Merge the options passed wih the plugin settings
+    options = $.extend({}, $.unalert.settings, options);
+    return this.each(function() {
+      var $this = $(this).detach(),
+          $unalert = $('<div />').addClass('unalert').attr('id', 'unalert_overlay_'+(++index));
+          $unalert.append($this).appendTo('body');
+      // Set the internal data
+      $unalert.data('index', index);
+      $unalert.data('element', this);
+      $unalert.data('visible', false);
+      $unalert.data('options', options);
+      // Style it
+      $unalert.hide();
+      $unalert.css('position', 'absolute');
+      $unalert.css('z-index', 999999999999999);
+      if(options.top)     $unalert.css('top',     options.top);
+      if(options.right)   $unalert.css('right',   options.right);
+      if(options.left)    $unalert.css('left',    options.left);
+      if(options.bottom)  $unalert.css('bottom',  options.bottom);
+      if(options.width)   $unalert.css('width',   options.width);
+      if(options.height)  $unalert.css('height',  options.height);
+      // Bind it to align on resize and scroll
+      $(window).bind('resize.unalert', align).
+                bind('scroll.unalert', align);
+      $(window).resize();
+      // Save reference to unalert on the elemnt
+      $this.data('unalert', $unalert)
+      // Add reference to the plugin
+      unalerts.push($unalert);
+      // Set the visibility
+      if(options.visible) {
+        $this.unalert('show');
+      }
+    });
+  }
+
+  function align() {
+    var windowWidth     = $(window).width(),
+        windowHeight    = $(window).height()
+        windowScrollTop = $(window).scrollTop();
+    // Calculate the alignment
+    $.each(unalerts, function(index, $unalert) {
+      var index = $unalert.data('index'),
+          options = $unalert.data('options'),
+          element = $unalert.data('element'),
+          horizontalRatio, verticalRatio;
+      // Left margin
+      if(horizontalRatio = _getRatio(options.left)) {
+        var leftMarginOffset = $unalert.width() * horizontalRatio * -1;
+        $unalert.css('margin-left', leftMarginOffset);
+      }
+      // Top margin
+      if(verticalRatio = _getRatio(options.top)) {
+        var topOffset = windowScrollTop + windowHeight * verticalRatio,
+            topMarginOffset = $unalert.height() * verticalRatio / -2;
+        $unalert.css('margin-top', topMarginOffset);
+        $unalert.css('top', topOffset);
+      }
+      // Execute the callback
+      options.align.call(element);
+    });
+  }
+  
+  function show() {
+    return this.each(function() {
+      console.log('show');
+      
+      var $this = $(this),
+          $unalert = $this.data('unalert');
+      var index = $unalert.data('index'),
+          options = $unalert.data('options');
+      // Make it visible
+      $unalert.show();
+      $unalert.data('visible', false);
+      // Bind click
+      $unalert
+    });
+  }
+
+  function hide() {
+  }
+
+  function click() {
+  }
+
+  function timeout() {
+  }
+  
+  function toogle() {
+  }
+  
+  function visible() {
+  }
+  
+  function destroy() {
+  }
+  
+  function update() {
+  }
+  
+  // Methods map
+  var methods = {
+    init: init,
+    show: show,
+    hide: hide,
+    align: align,
+    toogle: toogle,
+    visible: visible,
+    destory: destroy,
+    update: update
+  }
+  
+  // Private methods
+  function _getNumber(string) {
+    if(string = string.replace(/[^0-9\.]/g, '')) {
+      return Number(string)
+    }
+    return NaN
+  }
+  
+  function _getUnit(string) {
+    if(string = string.replace(/[0-9\.]+/g, '')) {
+      return string;
+    }
+    return undefined;
+  }
+  
+  function _isRatio(string) {
+    if(string.match(/([0-9]+)\%$/g)) {
+      return true;
+    }
+    return false;
+  }
+
+  function _getRatio(string) {
+    if(_isRatio(string)) {
+      return _getNumber(string) / 100;
+    }
+    return NaN;
+  }
+
 })(jQuery)
