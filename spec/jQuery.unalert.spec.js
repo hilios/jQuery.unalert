@@ -5,12 +5,13 @@ describe("jquery.unalert", function() {
         show: jasmine.createSpy('showCallback'),
         hide: jasmine.createSpy('hideCallback'),
         click: jasmine.createSpy('clickCallback'),
-        align: jasmine.createSpy('alignCallback')
+        align: jasmine.createSpy('alignCallback'),
+        timeout: jasmine.createSpy('timeoutCallback')
       };
 
   function createDomElement(type, message) {
-    if(type)    type = '';
-    if(message) message = '';
+    if(!type)    type = '';
+    if(!message) message = '';
     return $('<div id="alert'+(++id)+'" class="flash '+type+'">'+message+'</div>').appendTo('body');
   }
 
@@ -21,17 +22,14 @@ describe("jquery.unalert", function() {
   beforeEach(function() {
     createDomElement(null, 'Fake message'); // Create at least one!
     updateSelector();
-    
-    $selector.css('background', 'red')
+    for(var k in callbacks) {
+      callbacks[k].reset();
+    }
   });
   
   afterEach(function() {
     updateSelector();
-    $selector.remove();
-    // $('div.unalert').remove();
-    for(var k in callbacks) {
-      callbacks[k].reset();
-    }
+    $selector.unalert('destroy').remove();
   });
 
   it('should create the DOM used for the test', function() {
@@ -99,7 +97,7 @@ describe("jquery.unalert", function() {
 
     describe('show', function() {
       beforeEach(function() {
-        $selector.unalert({visible: false});
+        $selector.unalert({show: callbacks.show, align: callbacks.align, visible: false});
       });
       it('should make the unalert overlay visible', function() {
         $selector.unalert('show');
@@ -110,13 +108,47 @@ describe("jquery.unalert", function() {
         expect(callbacks.show).toHaveBeenCalled();
         expect(callbacks.show.callCount).toBe(1);
       });
+      it('should align everything again', function() {
+        $selector.unalert('show');
+        expect(callbacks.align).toHaveBeenCalled();
+        // Atention! It should not align if not visible, this is why this is only called once
+        expect(callbacks.align.callCount).toBe(1);
+      });
     });
-    describe('hide', function() {});
+    describe('hide', function() {
+      it('should make the unalert overlay invisible', function() {
+        $selector.unalert().unalert('hide');
+        expect($selector.is(':visible')).toBeFalsy();
+      });
+      it('should execute the callback method', function() {
+        $selector.unalert({hide: callbacks.hide}).unalert('hide');
+        expect(callbacks.hide).toHaveBeenCalled();
+        expect(callbacks.hide.callCount).toBe(1);
+      });
+    });
     describe('click', function() {});
-    describe('align', function() {});
+    describe('align', function() {
+      it('should execute the callback method', function() {
+        $selector.unalert({align: callbacks.align});
+        expect(callbacks.align).toHaveBeenCalled();
+        expect(callbacks.align.callCount).toBe(1);
+      });
+      it('should not align if the unalert is not visible', function() {
+        $selector.unalert({align: callbacks.align, visible: false});
+        $selector.unalert('show');
+        expect(callbacks.align).toHaveBeenCalled();
+        expect(callbacks.align.callCount).toBe(1);
+      });
+    });
     describe('toggle', function() {});
     describe('update', function() {});
-    describe('destroy', function() {});
+    describe('destroy', function() {
+      it('should remove the selector and call hide callback', function() {
+        $selector.unalert({hide: callbacks.hide}).unalert('destroy');
+        expect(callbacks.hide).toHaveBeenCalled();
+        expect(callbacks.hide.callCount).toBe(1);
+      });
+    });
     describe('visible', function() {});
   });
 });

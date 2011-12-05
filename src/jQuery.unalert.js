@@ -25,7 +25,8 @@
  */
 (function($) {
   var index = 0,
-      unalerts = [];
+      unalerts = [],
+      firstRun = true;
   
   $.unalert = {
     version: '1.0.0beta',
@@ -39,7 +40,7 @@
       show: showHandler,
       hide: hideHandler,
       click: clickHandler,
-      align: function() {},
+      align: alignHandler,
       timeout: timeoutHandler,
       timespan: 2 * 60 * 1000,
       visible: true
@@ -55,7 +56,7 @@
     } else if(typeof method === 'object' || !method) {
       return methods.init.apply(this, arguments);
     } else {
-      $.error('Method %s does not exist on jQuery.tooltip'.replace(/\%s/gi, method));
+      $.error('Method %s does not exist on jQuery.unalert'.replace(/\%s/gi, method));
     }
   };
   
@@ -66,6 +67,7 @@
   }
   
   function alignHandler() {
+    // ...
   }
 
   function clickHandler() {
@@ -75,6 +77,13 @@
   }
 
   function init(options) {
+    if(firstRun) {
+      // Bind align to resize and scroll
+      $(window).bind('resize.unalert', align).
+                bind('scroll.unalert', align);
+      // Not first run anymore...
+      firstRun = false;
+    }
     // Merge the options passed wih the plugin settings
     options = $.extend({}, $.unalert.settings, options);
     return this.each(function() {
@@ -96,12 +105,8 @@
       if(options.bottom)  $unalert.css('bottom',  options.bottom);
       if(options.width)   $unalert.css('width',   options.width);
       if(options.height)  $unalert.css('height',  options.height);
-      // Bind it to align on resize and scroll
-      $(window).bind('resize.unalert', align).
-                bind('scroll.unalert', align);
-      $(window).resize();
       // Save reference to unalert on the elemnt
-      $this.data('unalert', $unalert)
+      $this.data('unalert', $unalert);
       // Add reference to the plugin
       unalerts.push($unalert);
       // Set the visibility
@@ -109,6 +114,8 @@
         $this.unalert('show');
       }
     });
+    // Align all
+    $(window).resize();
   }
 
   function align() {
@@ -117,10 +124,16 @@
         windowScrollTop = $(window).scrollTop();
     // Calculate the alignment
     $.each(unalerts, function(index, $unalert) {
-      var index = $unalert.data('index'),
+      // Ignore null elements (the ones that has been destroyed)
+      if(!$unalert) return true;
+      // Collect all variables
+      var index   = $unalert.data('index'),
           options = $unalert.data('options'),
           element = $unalert.data('element'),
+          visible = $unalert.data('visible'),
           horizontalRatio, verticalRatio;
+      // Not align if is not visible
+      if(!visible) return true;
       // Left margin
       if(horizontalRatio = _getRatio(options.left)) {
         var leftMarginOffset = $unalert.width() * horizontalRatio * -1;
@@ -134,27 +147,59 @@
         $unalert.css('top', topOffset);
       }
       // Execute the callback
-      options.align.call(element);
+      options.align.call(element, $unalert);
     });
   }
   
   function show() {
     return this.each(function() {
-      console.log('show');
-      
-      var $this = $(this),
-          $unalert = $this.data('unalert');
-      var index = $unalert.data('index'),
-          options = $unalert.data('options');
+      var $this     = $(this),
+          $unalert  = $this.data('unalert');
+      var index     = $unalert.data('index'),
+          options   = $unalert.data('options');
       // Make it visible
       $unalert.show();
-      $unalert.data('visible', false);
+      $unalert.data('visible', true);
       // Bind click
-      $unalert
+      $(document).bind('click.unalert'+index, function() {
+        return options.click.call(element);
+      });
+      // Set the timeout
+      if(options.timespan > 0) {
+        var timeout = $unalert.data('timeout');
+        if(timeout) {
+          clearTimeout(timeout);
+        }
+        timeout = setInterval(function() {
+          options.timeout.call(this, $unalert);
+        }, options.timespan);
+      }
+      // Align everyting again
+      align();
+      // Execute the callback
+      options.show.call(this, $unalert);
     });
   }
 
   function hide() {
+    return this.each(function() {
+      var $this     = $(this),
+          $unalert  = $this.data('unalert');
+      var index     = $unalert.data('index'),
+          options   = $unalert.data('options');
+      // Make it visible
+      $unalert.hide();
+      $unalert.data('visible', false);
+      // Unbind click event
+      $(document).unbind('click.unalert'+index);
+      // Clear any timeout
+      var timeout = $unalert.data('timeout');
+      if(timeout) {
+        clearTimeout(timeout);
+      }
+      // Execute the callback
+      options.hide.call(this, $unalert);
+    });
   }
 
   function click() {
@@ -170,6 +215,19 @@
   }
   
   function destroy() {
+    return this.each(function() {
+      var $this     = $(this),
+          $unalert  = $this.data('unalert');
+      if(!$unalert) return; // If not an unalert do not do anything
+      // Get the element index
+      var index     = $unalert.data('index');
+      // Set the unalerts index to null
+      unalerts[index] = null;
+      // Hide just to unbind events
+      $this.unalert('hide');
+      // Remove the unalert div
+      $unalert.remove();
+    });
   }
   
   function update() {
@@ -183,7 +241,7 @@
     align: align,
     toogle: toogle,
     visible: visible,
-    destory: destroy,
+    destroy: destroy,
     update: update
   }
   
