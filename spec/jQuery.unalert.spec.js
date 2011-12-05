@@ -142,7 +142,17 @@ describe("jquery.unalert", function() {
       });
     });
 
-    describe('toggle', function() {});
+    describe('toggle', function() {
+      it('should show and hide', function() {
+        $selector.unalert({visible: false});
+        // Should show
+        $selector.unalert('toogle');
+        expect($selector.is(':visible')).toBeTruthy();
+        // Should hide
+        $selector.unalert('toogle');
+        expect($selector.is(':visible')).toBeFalsy();
+      });
+    });
 
     describe('update', function() {});
 
@@ -154,11 +164,29 @@ describe("jquery.unalert", function() {
       });
     });
     describe('visible', function() {
-      
+        
+      it('should return false when initiated with true visibility', function() {
+        $selector.unalert({visible: true});
+        expect($selector.unalert('visible')).toBeTruthy();
+      });
+      it('should return false when showed', function() {
+        $selector.unalert({visible: false});
+        $selector.unalert('show');
+        expect($selector.unalert('visible')).toBeTruthy();
+      });
+      it('should return false when initiated with false visibility', function() {
+        $selector.unalert({visible: false});
+        expect($selector.unalert('visible')).toBeFalsy();
+      });
+      it('should return false when hided', function() {
+        $selector.unalert({visible: true});
+        $selector.unalert('hide');
+        expect($selector.unalert('visible')).toBeFalsy();
+      });
     });
   });
 
-  describe('events', function() {
+  describe('events callback', function() {
     describe('click', function() {
       it('should execute the callback on click', function() {
         $selector.unalert({click: callbacks.click});
@@ -167,7 +195,7 @@ describe("jquery.unalert", function() {
         expect(callbacks.click.callCount).toBe(1);
       });
     });
-    
+
     describe('timeout', function() {
       it('should execute the callback method', function() {
         $selector.unalert({timeout: callbacks.timeout, timespan: 1});

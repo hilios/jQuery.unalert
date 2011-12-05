@@ -212,9 +212,16 @@
   }
   
   function toogle() {
+    return this.each(function() {
+      var $this   = $(this),
+          visible = $this.unalert('visible');
+      // Show/Hide based on visibility
+      $this.unalert(visible ? 'hide' : 'show')
+    });
   }
   
   function visible() {
+    return this.is(':visible');
   }
   
   function destroy() {
