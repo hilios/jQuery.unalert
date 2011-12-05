@@ -211,6 +211,9 @@ describe("jquery.unalert", function() {
     describe('timeout', function() {
       it('should execute the callback method', function() {
         $selector.unalert({timeout: callbacks.timeout, timespan: 1});
+        expect(callbacks.timeout).not.toHaveBeenCalled();
+        // Wait a little bit longer
+        waits(2);
         // Pay atention the timeout is async
         runs(function() {
           expect(callbacks.timeout).toHaveBeenCalled();

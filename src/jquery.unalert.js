@@ -61,6 +61,7 @@
   };
   
   function showHandler() {
+    $(this).hide().fadeIn();
   }
 
   function hideHandler() {
@@ -71,9 +72,13 @@
   }
 
   function clickHandler() {
+    $(this).fadeOut(function() {
+      $(this).unalert('hide');
+    });
   }
 
   function timeoutHandler() {
+    clickHandler.apply(this, arguments);
   }
 
   function init(options) {
@@ -168,7 +173,9 @@
         if(timeout) {
           clearTimeout(timeout);
         }
-        timeout = setTimeout(timer.call(this), options.timespan);
+        timeout = setTimeout(function(scope) {
+          timer.call(scope)
+        }, options.timespan, this);
       }
       // Align everyting again
       align();

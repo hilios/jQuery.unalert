@@ -11,7 +11,12 @@
   <script src="../src/jquery.unalert.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" charset="utf-8">
     $(function() {
-      $('div#flash').unalert({top: '0.01%'});
+      $('div#flash').unalert({top: '0.1%', timespan: 10000});
+      // Bind link to show again
+      $('a').click(function() {
+        $('div#flash').unalert('show');
+        return false;
+      });
     });
   </script>
 </head>
@@ -20,7 +25,7 @@
   <div id="container">
     <h1>Basic usage of jQuery UnAlert</h1>
     <p>
-      Wait for message appears, scroll and resize to view the alignment or click to desapear.
+      Wait for message appears, scroll and resize to view the alignment, click to desapear or wait 10 seconds. <a href="#">Click here to show again</a>
     </p>
     <div id="flash">
       <p>Hello World</p>
