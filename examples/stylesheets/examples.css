@@ -1,0 +1,6 @@
+div#container {margin: 0 auto; padding: 20px; width: 800px;}
+h3{clear: both;}
+pre{background-color: #eee; border: 1px solid #ccc; line-height: 1.4em; padding: 10px; margin: 0;}
+
+div#flash{background: #ccc; border-bottom: 1px solid #aaa; padding: 10px;}
+div#flash p{margin: 0;}
