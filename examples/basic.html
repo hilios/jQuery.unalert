@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Basic Example - jQuery The Final Countdown plugin</title>
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssbase/base-min.css">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/examples.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../src/jquery.unalert.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">
+    $(function() {
+      
+    });
+  </script>
+</head>
+
+<body>
+  <div id="container">
+    <h1>Basic usage of jQuery UnAlert</h1>
+    <p>
+      You can use this sample for under construction sites, or maintenance period. Try yourself bellow:<br/>
+      Reset countdown to
+      <select id="exampleDate">
+        <option>choose some date and time</option>
+        <option value="set15daysFromNow">15 days from now</option>
+        <option value="set5minFromNow">5 minutes from now</option>
+        <option value="set1minFromNow">1 minute from now</option>
+        <option value="daysFromNow">Input days from now</option>
+        <option value="minutesFromNow">Input minutes from now</option>
+        <option value="other">Other value</option>
+      </select>
+      .
+    </p>
+    <div id="flash">
+      <p>
+        Hello World
+      </p>
+    </div>
+
+    <h3>Source code:</h3>
+    <pre>&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;
+// Javascript
+$(function() {
+  $('div#flash').unalert();
+});
+&lt;/script&gt;
+
+&lt;!-- HTML --&gt;
+&lt;div id=&quot;flash&quot;&gt;
+  &lt;p&gt;
+    Hello World
+  &lt;/p&gt;
+&lt;/div&gt;
+</pre>
+  </div>
+</body>
+</html>
