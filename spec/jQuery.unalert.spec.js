@@ -115,6 +115,7 @@ describe("jquery.unalert", function() {
         expect(callbacks.align.callCount).toBe(1);
       });
     });
+
     describe('hide', function() {
       it('should make the unalert overlay invisible', function() {
         $selector.unalert().unalert('hide');
@@ -126,7 +127,7 @@ describe("jquery.unalert", function() {
         expect(callbacks.hide.callCount).toBe(1);
       });
     });
-    describe('click', function() {});
+
     describe('align', function() {
       it('should execute the callback method', function() {
         $selector.unalert({align: callbacks.align});
@@ -140,8 +141,11 @@ describe("jquery.unalert", function() {
         expect(callbacks.align.callCount).toBe(1);
       });
     });
+
     describe('toggle', function() {});
+
     describe('update', function() {});
+
     describe('destroy', function() {
       it('should remove the selector and call hide callback', function() {
         $selector.unalert({hide: callbacks.hide}).unalert('destroy');
@@ -149,6 +153,30 @@ describe("jquery.unalert", function() {
         expect(callbacks.hide.callCount).toBe(1);
       });
     });
-    describe('visible', function() {});
+    describe('visible', function() {
+      
+    });
+  });
+
+  describe('events', function() {
+    describe('click', function() {
+      it('should execute the callback on click', function() {
+        $selector.unalert({click: callbacks.click});
+        $(document).click(); // Simulating a click
+        expect(callbacks.click).toHaveBeenCalled();
+        expect(callbacks.click.callCount).toBe(1);
+      });
+    });
+    
+    describe('timeout', function() {
+      it('should execute the callback method', function() {
+        $selector.unalert({timeout: callbacks.timeout, timespan: 1});
+        // Pay atention the timeout is async
+        runs(function() {
+          expect(callbacks.timeout).toHaveBeenCalled();
+          expect(callbacks.timeout.callCount).toBe(1);
+        });
+      });
+    });
   });
 });

@@ -42,7 +42,7 @@
       click: clickHandler,
       align: alignHandler,
       timeout: timeoutHandler,
-      timespan: 2 * 60 * 1000,
+      timespan: 0,
       visible: true
     },
     defaults: function(options) {
@@ -160,19 +160,15 @@
       // Make it visible
       $unalert.show();
       $unalert.data('visible', true);
-      // Bind click
-      $(document).bind('click.unalert'+index, function() {
-        return options.click.call(element);
-      });
+      // Bind click and delegate action to callback
+      $(document).bind('click.unalert'+index, {options: options, element: this}, click);
       // Set the timeout
       if(options.timespan > 0) {
         var timeout = $unalert.data('timeout');
         if(timeout) {
           clearTimeout(timeout);
         }
-        timeout = setInterval(function() {
-          options.timeout.call(this, $unalert);
-        }, options.timespan);
+        timeout = setTimeout(timer.call(this), options.timespan);
       }
       // Align everyting again
       align();
@@ -202,10 +198,17 @@
     });
   }
 
-  function click() {
+  function click(event) {
+    return event.data.options.click.call(event.data.element);
   }
 
-  function timeout() {
+  function timer() {
+    var $this     = $(this),
+        $unalert  = $this.data('unalert');
+    var index     = $unalert.data('index'),
+        options   = $unalert.data('options');
+    // Execute the callback
+    options.timeout.call(this, $unalert);
   }
   
   function toogle() {
