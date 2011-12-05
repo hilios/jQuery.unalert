@@ -154,7 +154,19 @@ describe("jquery.unalert", function() {
       });
     });
 
-    describe('update', function() {});
+    describe('update', function() {
+      beforeEach(function() {
+        $selector.unalert({align: callbacks.align});
+        $selector.unalert('update', {a: 'b'});
+      });
+      it('should update the unalert options for this selector', function() {
+        expect($selector.data('unalert').data('options').a).toBe('b')
+      });
+      it('should align after this', function() {
+        expect(callbacks.align).toHaveBeenCalled();
+        expect(callbacks.align.callCount).toBe(2); // One when starts + other when update = 2
+      });
+    });
 
     describe('destroy', function() {
       it('should remove the selector and call hide callback', function() {

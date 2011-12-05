@@ -114,8 +114,8 @@
         $this.unalert('show');
       }
     });
-    // Align all
-    $(window).resize();
+    // Make the first alignment
+    align();
   }
 
   function align() {
@@ -240,7 +240,16 @@
     });
   }
   
-  function update() {
+  function update(settings) {
+    return this.each(function() {
+      var $this     = $(this),
+          $unalert  = $this.data('unalert');
+      var options   = $unalert.data('options');
+          options   = $.extend(options, settings);
+      $unalert.data('options', options);
+      // Re-align
+      align();
+    });
   }
   
   // Methods map
