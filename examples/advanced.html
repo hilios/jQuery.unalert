@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Advanced Example - jQuery The Final Countdown plugin</title>
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssbase/base-min.css">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/examples.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../src/jquery.unalert.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">
+    $(function() {
+      $('div#flash').unalert({top: '0.1%', timespan: 10000});
+      // Bind link to show again
+      $('a').click(function() {
+        $('div#flash').unalert('show');
+        return false;
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div id="container">
+    <h1>Advanced settings for jQuery UnAlert</h1>
+    <p>
+      Use the form bellow to setup the plugin, and click the buttons to apply.
+    </p>
+    <!--
+    top: '0.1%',
+    left: '50%',
+    right: null,
+    bottom: null,
+    width: '450px',
+    height: '100px',
+    show: showHandler,
+    hide: hideHandler,
+    click: clickHandler,
+    align: alignHandler,
+    timeout: timeoutHandler,
+    timespan: 0,
+    visible: true
+    -->
+    <fieldset>
+      <legend>Settings</legend>
+      <p>
+        <label>Top:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Left:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Right:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Bottom:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Width:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Height:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Timespan</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Visible?</label>
+        <select>
+          <option value="0">True</option>
+          <option value="0">False</option>
+        </select>
+      </p>
+    </fieldset>
+    <fieldset>
+      <legend>Callbacks</legend>
+      <p>
+        <label>Show:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Hide:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Click:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Align:</label>
+        <input type="text" />
+      </p>
+      <p>
+        <label>Timeout</label>
+        <input type="text" />
+      </p>
+    </fieldset>
+    <p>
+      <input type="button" value="Apply" />
+    </p>
+    <div id="flash">
+      <p>Hello World</p>
+    </div>
+
+    <h3>Source code:</h3>
+    <pre>&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;
+// Javascript
+$(function() {
+  $('div#flash').unalert();
+});
+&lt;/script&gt;
+
+&lt;!-- HTML --&gt;
+&lt;div id=&quot;flash&quot;&gt;
+  &lt;p&gt;
+    Hello World
+  &lt;/p&gt;
+&lt;/div&gt;
+</pre>
+  </div>
+</body>
+</html>

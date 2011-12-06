@@ -4,3 +4,8 @@ pre{background-color: #eee; border: 1px solid #ccc; line-height: 1.4em; padding:
 
 div#flash{background: #ccc; border-bottom: 1px solid #aaa; padding: 10px;}
 div#flash p{margin: 0;}
+
+fieldset{border: 1px solid #ccc; height: 350px; margin-right: 10px; float: left; padding: 20px; width: 340px;}
+fieldset:last-child{margin: 0;}
+legend{font-weight: bold; text-transform: uppercase;}
+label{float: left; text-align: right; line-height: 1.5em; padding-right: 5px; width: 70px;}
