@@ -5,7 +5,11 @@ pre{background-color: #eee; border: 1px solid #ccc; line-height: 1.4em; padding:
 div#flash{background: #ccc; border-bottom: 1px solid #aaa; padding: 10px;}
 div#flash p{margin: 0;}
 
-fieldset{border: 1px solid #ccc; height: 350px; margin-right: 10px; float: left; padding: 20px; width: 340px;}
-fieldset:last-child{margin: 0;}
-legend{font-weight: bold; text-transform: uppercase;}
-label{float: left; text-align: right; line-height: 1.5em; padding-right: 5px; width: 70px;}
+.fieldsets:last-child{margin: 0;}
+fieldset{border: 1px solid #ccc; height: 350px; margin-right: 10px; float: left; padding: 10px; width: 368px;}
+legend{font-weight: bold; text-transform: uppercase; margin-right: -15px;}
+label{float: left; line-height: 1.5em; width: 70px;}
+small{color: #666; clear: both; display: block; margin-left: 70px; }
+input[type=text]{width: 360px;}
+input[type=number]{width: 50px;}
+input[type=button]{padding: 5px;}

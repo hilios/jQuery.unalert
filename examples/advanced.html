@@ -7,124 +7,174 @@
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssbase/base-min.css">
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">
   <link rel="stylesheet" type="text/css" href="stylesheets/examples.css">
+  <link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" />
+  <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js" type="text/javascript"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="../src/jquery.unalert.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" charset="utf-8">
     $(function() {
+      prettyPrint();
+
+      function getElementValueFrom(name) {
+        var unit  = $('input[name="'+name+'"][unit]'),
+            value = $('input[name="'+name+'"][value]');
+        if(value.length > 0 && unit.length > 0) {
+          return Number(value.val()) + unit.val();
+        }
+        return $('input[name="'+name+'"]').val();
+      }
+
+      function getFields() {
+        return {
+          top: getElementValueFrom(unalert[top][value]),
+        };
+      }
+
+      console.log();
+
       $('div#flash').unalert({top: '0.1%', timespan: 10000});
-      // Bind link to show again
-      $('a').click(function() {
-        $('div#flash').unalert('show');
-        return false;
-      });
+      
     });
   </script>
 </head>
 
 <body>
   <div id="container">
-    <h1>Advanced settings for jQuery UnAlert</h1>
+    <h1>Full capabilities of jQuery UnAlert</h1>
     <p>
-      Use the form bellow to setup the plugin, and click the buttons to apply.
+      Use the form bellow to tailor the plugin setting, and click the buttons to apply and see in action.
     </p>
-    <!--
-    top: '0.1%',
-    left: '50%',
-    right: null,
-    bottom: null,
-    width: '450px',
-    height: '100px',
-    show: showHandler,
-    hide: hideHandler,
-    click: clickHandler,
-    align: alignHandler,
-    timeout: timeoutHandler,
-    timespan: 0,
-    visible: true
-    -->
-    <fieldset>
-      <legend>Settings</legend>
-      <p>
-        <label>Top:</label>
-        <input type="text" />
+    <div class="fieldsets">
+      <fieldset>
+        <legend>Settings</legend>
+        <p>
+          <label>Top:</label>
+          <input type="number" name="unalert[top][value]" value="20" />
+          <select name="unalert[top][unit]">
+            <option>%</option>
+            <option>px</option>
+          </select>
+        </p>
+        <p>
+          <label>Left:</label>
+          <input type="number" name="unalert[left][value]" value="20" />
+          <select name="unalert[left][unit]">
+            <option>%</option>
+            <option>px</option>
+          </select>
+        </p>
+        <p>
+          <label>Right:</label>
+          <input type="number" name="unalert[right][value]" />
+          <select name="unalert[right][unit]">
+            <option>%</option>
+            <option>px</option>
+          </select>
+        </p>
+        <p>
+          <label>Bottom:</label>
+          <input type="number" name="unalert[bottom][value]" />
+          <select name="unalert[bottom][unit]">
+            <option>%</option>
+            <option>px</option>
+          </select>
+        </p>
+        <p>
+          <label>Width:</label>
+          <input type="number" name="unalert[width][value]" value="450" />
+          <select name="unalert[width][unit]">
+            <option>px</option>
+            <option>%</option>
+          </select>
+        </p>
+        <p>
+          <label>Height:</label>
+          <input type="number" name="unalert[height][value]" value="100" />
+          <select name="unalert[height][unit]">
+            <option>px</option>
+            <option>%</option>
+          </select>
+        </p>
+        <p>
+          <label>Timespan</label>
+          <input type="number" name="unalert[timespan]" value="0" />
+          <small>Number in mili seconds that the <strong>UnAlert</strong> will be on screen (zero stop the funcition)</small>
+        </p>
+        <p>
+          <label>Visible?</label>
+          <select name="unalert[visible]">
+            <option value="1">True</option>
+            <option value="0">False</option>
+          </select>
+          <small>Config <strong>UnAlert</strong> visibility on start</small>
+        </p>
+      </fieldset>
+      <fieldset>
+        <legend>Callbacks</legend>
+        <p>
+          Write a message and see the print in the javascript console on Firebug.
+        </p>
+        <p>
+          <label>Show:</label>
+          <input type="text" name="unalert[callback][show]" />
+        </p>
+        <p>
+          <label>Hide:</label>
+          <input type="text" name="unalert[callback][hide]" />
+        </p>
+        <p>
+          <label>Click:</label>
+          <input type="text" name="unalert[callback][click]" />
+        </p>
+        <p>
+          <label>Align:</label>
+          <input type="text" name="unalert[callback][align]" />
+        </p>
+        <p>
+          <label>Timeout</label>
+          <input type="text" name="unalert[callback][timeout]" />
+        </p>
+      </fieldset>
+      <p class="actions">
+        <input type="button" value="Apply/Update" />
+        <span>Methods avaliable:</span>
+        <input type="button" value="Show" />
+        <input type="button" value="Hide" />
+        <input type="button" value="Toogle" />
+        <input type="button" value="Is visible?" />
+        <input type="button" value="Destroy" disabled="disabled" />
       </p>
-      <p>
-        <label>Left:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Right:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Bottom:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Width:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Height:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Timespan</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Visible?</label>
-        <select>
-          <option value="0">True</option>
-          <option value="0">False</option>
-        </select>
-      </p>
-    </fieldset>
-    <fieldset>
-      <legend>Callbacks</legend>
-      <p>
-        <label>Show:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Hide:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Click:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Align:</label>
-        <input type="text" />
-      </p>
-      <p>
-        <label>Timeout</label>
-        <input type="text" />
-      </p>
-    </fieldset>
-    <p>
-      <input type="button" value="Apply" />
-    </p>
+    </div>
     <div id="flash">
       <p>Hello World</p>
     </div>
 
     <h3>Source code:</h3>
-    <pre>&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;
-// Javascript
-$(function() {
-  $('div#flash').unalert();
-});
-&lt;/script&gt;
-
-&lt;!-- HTML --&gt;
-&lt;div id=&quot;flash&quot;&gt;
+    <pre class="prettyprint lang-java">&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;
+  // Javascript
+  $(function() {
+    $('div#flash').unalert({
+        top:      '0.1%',
+        left:     '50%',
+        right:    null,
+        bottom:   null,
+        width:    '450px',
+        height:   '100px',
+        show:     function() { console.log('Show callback'); },
+        hide:     function() { console.log('Hide callback'); },
+        click:    function() { console.log('Click callback'); },
+        align:    function() { console.log('Align callback'); },
+        timeout:  function() { console.log('Timeout callback'); },
+        timespan: 0,
+        visible:  true
+    });
+&lt;/script&gt;</pre>
+    <h6>HTML</h6>
+    <pre class="prettyprint lang-html">&lt;div id=&quot;flash&quot;&gt;
   &lt;p&gt;
     Hello World
   &lt;/p&gt;
-&lt;/div&gt;
-</pre>
+&lt;/div&gt;</pre>
   </div>
 </body>
 </html>
