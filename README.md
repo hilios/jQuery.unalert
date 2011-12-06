@@ -17,6 +17,7 @@ There is some plugins that do the same, like [jGrow](http://www.stanlemon.net/pr
 The idea of this plugin is very close to the implementation of the lightbox itself, but again it won't be depend on the heavy css and html configuration, it is a framework/plugin responsability to help you to get the job done and be as flexibles as it can be.
 
 So this plugins objectives are:
+
 *   Be HTML / CSS / Image abstract
 *   Help to detach and present the alert(s)
 *   Make-it easy to control inside a jQuery selector
