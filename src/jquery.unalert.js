@@ -31,7 +31,7 @@
   $.unalert = {
     version: '1.0.0beta',
     settings: {
-      top: '45%',
+      top: '0.1%',
       left: '50%',
       right: null,
       bottom: null,
