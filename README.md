@@ -52,5 +52,5 @@ Credits
 License
 -------
 
-Copyright (c) 20011 Edson Hilios. This is a free software is licensed under the MIT License.
+Copyright (c) 2013 Edson Hilios. This is a free software is licensed under the MIT License.
 
