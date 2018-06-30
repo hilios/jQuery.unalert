@@ -35,7 +35,7 @@ Documentation
 Testing
 -------
 
-This plugin was tested with [Jasmine BDD Framework](http://pivotal.github.com/jasmine/). To test yourself just open the spec/SpecRuner.html on your favorite web browser, it take ~0.0s.
+This plugin was tested with [Jasmine BDD Framework](https://jasmine.github.io/). To test yourself just open the spec/SpecRuner.html on your favorite web browser, it take ~0.0s.
 
 The script was tested against:
 
